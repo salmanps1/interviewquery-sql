@@ -1,0 +1,21 @@
+https://www.interviewquery.com/questions/second-longest-flight
+
+WITH RankedFlights AS (
+    SELECT
+        f.*,
+        DENSE_RANK() OVER (PARTITION BY LEAST(source_location, destination_location), GREATEST(source_location, destination_location) ORDER BY TIMESTAMPDIFF(SECOND, f.flight_start, f.flight_end) DESC) AS rnk
+    FROM
+        flights f
+)
+SELECT
+    id,
+    destination_location,
+    source_location,
+    flight_start,
+    flight_end
+FROM
+    RankedFlights
+WHERE
+    rnk = 2
+ORDER BY
+    id;
