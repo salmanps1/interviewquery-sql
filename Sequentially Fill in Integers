@@ -1,0 +1,13 @@
+https://www.interviewquery.com/questions/sequentially-fill-in-integers
+
+WITH RECURSIVE CTE AS (
+    SELECT 1 AS n, int_numbers
+    FROM tbl_numbers
+    UNION ALL
+    SELECT n + 1, int_numbers
+    FROM CTE
+    WHERE n < int_numbers
+)
+SELECT int_numbers AS seq_numbers
+FROM CTE
+ORDER BY int_numbers;
