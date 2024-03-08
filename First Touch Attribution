@@ -1,0 +1,21 @@
+https://www.interviewquery.com/questions/first-touch-attribution
+
+WITH FirstTouchAttribution AS (
+    SELECT
+        us.user_id,
+        a.channel,
+        ROW_NUMBER() OVER (PARTITION BY us.user_id ORDER BY a.session_id DESC) AS rn
+    FROM
+        user_sessions us
+    JOIN
+        attribution a ON us.session_id = a.session_id
+    WHERE
+        a.conversion = TRUE
+)
+SELECT
+    channel,
+    user_id
+FROM
+    FirstTouchAttribution
+WHERE
+    rn = 1;
