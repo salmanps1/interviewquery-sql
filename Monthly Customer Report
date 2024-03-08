@@ -1,0 +1,17 @@
+https://www.interviewquery.com/questions/monthly-customer-report
+
+SELECT 
+    EXTRACT(MONTH FROM t.created_at) AS month,
+    COUNT(DISTINCT t.user_id) AS num_customers,
+    COUNT(t.id) AS num_orders,
+    SUM(t.quantity * p.price) AS order_amt
+FROM 
+    transactions t
+JOIN 
+    products p ON t.product_id = p.id
+WHERE 
+    EXTRACT(YEAR FROM t.created_at) = 2020
+GROUP BY 
+    EXTRACT(MONTH FROM t.created_at)
+ORDER BY 
+    month;
